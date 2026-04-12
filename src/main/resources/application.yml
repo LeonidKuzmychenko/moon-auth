@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: moon-auth
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:moon_auth}
+    username: ${POSTGRES_USER:user}
+    password: ${POSTGRES_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USER:user}
+    password: ${MAIL_PASSWORD:password}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:v9y$B&E)H@McQfTjWnZr4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq}
+    access-token-expiration-ms: 600000 # 10 minutes
+    refresh-token-expiration-ms: 604800000 # 7 days
+  security:
+    brute-force:
+      max-attempts: 5
+      lock-duration-ms: 900000 # 15 minutes
+    throttling:
+      email-resend-ms: 60000 # 1 minute
+      password-reset-ms: 300000 # 5 minutes
+    email-verification:
+      expiration-ms: 86400000 # 24 hours
+    password-reset:
+      expiration-ms: 1800000 # 30 minutes
+  cors:
+    allowed-origins: "*"
+
+logging:
+  level:
+    lk.tech.moonauth: DEBUG
+    org.springframework.security: INFO

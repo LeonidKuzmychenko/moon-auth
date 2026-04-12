@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: moon-auth-postgres
+    environment:
+      POSTGRES_DB: moon_auth
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d moon_auth"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: moon-auth-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: moon-auth-mailpit
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # UI
+
+  auth-service:
+    build: .
+    container_name: moon-auth-service
+    ports:
+      - "8080:8080"
+      - "5005:5005"   # debug порт
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: moon_auth
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      JWT_SECRET: "v9y$B&E)H@McQfTjWnZr4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy

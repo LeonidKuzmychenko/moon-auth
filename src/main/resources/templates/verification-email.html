@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm your email</title>
+</head>
+<body>
+    <h1>Confirm your email</h1>
+    <p>Please use the following token to confirm your email:</p>
+    <h2 th:text="${token}"></h2>
+    <p>The token is valid for 24 hours.</p>
+</body>
+</html>
