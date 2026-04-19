@@ -1,15 +1,28 @@
-# Build stage
-FROM eclipse-temurin:21-jdk-alpine AS build
-WORKDIR /app
-COPY . .
-RUN ./gradlew bootJar --no-daemon
+# ---------- BUILD STAGE ----------
+FROM gradle:9.1-jdk21 AS build
 
-# Run stage
-FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
+
+# 1. Копируем только файлы зависимостей (кешируем)
+COPY build.gradle settings.gradle ./
+COPY gradle ./gradle
+
+# 2. Прогреваем зависимости
+RUN gradle dependencies --no-daemon || true
+
+# 3. Теперь копируем исходники
+COPY src ./src
+
+# 4. Сборка
+RUN gradle bootJar --no-daemon
+
+# ---------- RUN STAGE ----------
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+
 COPY --from=build /app/build/libs/*.jar app.jar
 
-#5005 - only debug
-EXPOSE 8080 5005
+EXPOSE 8383
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Duser.timezone=Europe/Kyiv", "-jar", "app.jar"]
