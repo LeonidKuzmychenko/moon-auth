@@ -13,10 +13,10 @@ public class BruteForceService {
 
     private final StringRedisTemplate redisTemplate;
 
-    @Value("${app.security.brute-force.max-attempts:5}")
+    @Value("${app.security.brute-force.max-attempts}")
     private int maxAttempts;
 
-    @Value("${app.security.brute-force.lock-duration-ms:900000}")
+    @Value("${app.security.brute-force.lock-duration-ms}")
     private long lockDurationMs;
 
     private static final String LOGIN_ATTEMPT_PREFIX = "login_attempt:";

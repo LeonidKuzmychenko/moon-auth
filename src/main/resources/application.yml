@@ -5,13 +5,13 @@ spring:
   application:
     name: moon-auth
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -20,21 +20,10 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
-  mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
-    username: ${MAIL_USER}
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: false
-          starttls:
-            enable: false
 
 app:
   jwt:
-    secret: ${JWT_SECRET:v9y$B&E)H@McQfTjWnZr4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq}
+    secret: ${JWT_SECRET}
     access-token-expiration-ms: 600000 # 10 minutes
     refresh-token-expiration-ms: 604800000 # 7 days
   security:
@@ -50,6 +39,8 @@ app:
       expiration-ms: 1800000 # 30 minutes
   cors:
     allowed-origins: "*"
+  mail-service:
+    url: ${MAIL_SERVICE_URL}
 
 logging:
   level:

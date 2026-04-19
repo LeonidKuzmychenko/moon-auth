@@ -1,7 +1,7 @@
 package lk.tech.moonauth.user.service;
 
 import lk.tech.moonauth.auth.dto.RegisterRequest;
-import lk.tech.moonauth.email.service.EmailService;
+import lk.tech.moonauth.email.EmailService;
 import lk.tech.moonauth.token.entity.EmailVerificationToken;
 import lk.tech.moonauth.token.repository.EmailVerificationTokenRepository;
 import lk.tech.moonauth.user.entity.Role;

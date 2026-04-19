@@ -2,7 +2,7 @@ package lk.tech.moonauth.user.service;
 
 import lk.tech.moonauth.auth.dto.ChangePasswordRequest;
 import lk.tech.moonauth.auth.dto.ResetPasswordRequest;
-import lk.tech.moonauth.email.service.EmailService;
+import lk.tech.moonauth.email.EmailService;
 import lk.tech.moonauth.token.entity.PasswordResetToken;
 import lk.tech.moonauth.token.repository.PasswordResetTokenRepository;
 import lk.tech.moonauth.token.repository.RefreshTokenRepository;
